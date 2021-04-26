@@ -41,7 +41,10 @@ class Property : Equatable{
     The native name that is suitable to export the JSON property in the target language
     */
     var nativeName : String
-    
+    /// 字段注释
+    var annotation : String
+    /// 字段类型
+    var fieldType : String
     /**
     The JSON property name to fetch the value of this property from a JSON object
     */
@@ -132,7 +135,7 @@ class Property : Equatable{
     /** 
     The designated initializer for the class
     */
-    init(jsonName: String, nativeName: String, type: String, isArray: Bool, isCustomClass: Bool, lang: LangModel)
+    init(jsonName: String, nativeName: String, type: String, isArray: Bool, isCustomClass: Bool, lang: LangModel, annotation : String, fieldType : String)
     {
         self.jsonName = jsonName.replacingOccurrences(of: " ", with: "")
         self.nativeName = nativeName.replacingOccurrences(of: " ", with: "")
@@ -140,14 +143,16 @@ class Property : Equatable{
         self.isArray = isArray
         self.isCustomClass = isCustomClass
         self.lang = lang
+        self.annotation = annotation
+        self.fieldType = fieldType
     }
     
     
     /**
     Convenience initializer which calls the designated initializer with isArray = false and isCustomClass = false
     */
-    convenience init(jsonName: String, nativeName: String, type: String, lang: LangModel){
-        self.init(jsonName: jsonName, nativeName: nativeName, type: type, isArray: false, isCustomClass: false, lang: lang)
+    convenience init(jsonName: String, nativeName: String, type: String, lang: LangModel, annotation : String, fieldType : String){
+        self.init(jsonName: jsonName, nativeName: nativeName, type: type, isArray: false, isCustomClass: false, lang: lang, annotation : annotation, fieldType: fieldType)
     }
     
     

@@ -1,0 +1,67 @@
+{
+    "modelStart": "(",
+    "importForEachCustomType": "",
+    "booleanGetter": "",
+    "briefDescription": "",
+    "utilityMethods": [
+                       {
+                       "forEachProperty": "",
+                       "bodyEnd": "",
+                       "signature": "",
+                       "forEachCustomTypeProperty": "",
+                       "forEachArrayOfCustomTypeProperty": "",
+                       "returnStatement": "",
+                       "body": "",
+                       "comment": "",
+                       "bodyStart": ""
+                       },
+                       {
+                       "forEachProperty": "",
+                       "bodyEnd": "",
+                       "signature": "",
+                       "forEachCustomTypeProperty": "",
+                       "forEachArrayOfCustomTypeProperty": "",
+                       "returnStatement": "",
+                       "body": "",
+                       "comment": "",
+                       "bodyStart": ""
+                       },
+                       {
+                       "forEachProperty": "",
+                       "bodyEnd": "",
+                       "signature": "",
+                       "forEachCustomTypeProperty": "",
+                       "forEachArrayOfCustomTypeProperty": "",
+                       "returnStatement": "",
+                       "body": "",
+                       "comment": "",
+                       "bodyStart": ""
+                       }
+                       ],
+    "dataTypes": {
+        "stringType": "String",
+        "boolType": "Boolean",
+        "floatType": "Float",
+        "doubleType": "Double",
+        "longType": "Long",
+        "intType": "Int"
+    },
+    "wordsToRemoveToGetArrayElementsType": [],
+    "defaultParentWithUtilityMethods": "",
+    "constructors": [],
+    "modelDefinition": "\ndata class <!ModelName!>",
+    "genericType": "",
+    "getter": "",
+    "setter": "",
+    "displayLangName": "Koltlin - YXKoltlin",
+    "fileExtension": "kt",
+    "basicTypesWithSpecialFetchingNeeds": [
+    ],
+    "arrayType": "List<<!ElementType!>Entity>",
+    "modelDefinitionWithParent": "\ndata class <!ModelName!>Entity",
+    "instanceVarDefinition": "\tval <!VarName!>: <!VarType!>?",
+    "supportsFirstLineStatement": "false",
+    "modelEnd": "\n)",
+    "staticImports": "",
+    "langName": "YXKoltlin"
+}

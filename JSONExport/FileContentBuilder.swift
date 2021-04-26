@@ -73,7 +73,7 @@ class FilesContentBuilder{
     - parameter jsonObject: acts as an example of the json object, which the generated fill be able to handle
     - parameter files: the generated file will be appended to this array
     */
-    func addFileWithName(_ className: inout String, jsonObject: NSDictionary, files : inout [FileRepresenter], toOneRelationWithProperty: Property! = nil)
+    func addFileWithName(_ className: inout String, jsonObject: NSDictionary, files : inout [FileRepresenter], toOneRelationWithProperty: Property! = nil, annotations : inout [Array<Any>])
     {
         var properties = [Property]()
         if !className.hasPrefix(classPrefix){
@@ -89,7 +89,7 @@ class FilesContentBuilder{
         //loop all the json properties and handle each one individually
         for jsonPropertyName in jsonProperties{
             let value : AnyObject = jsonObject[jsonPropertyName]! as AnyObject
-            let property = propertyForValue(value, jsonKeyName: jsonPropertyName)
+            let property = propertyForValue(value, jsonKeyName: jsonPropertyName, annotations: annotations)
             //Avoid duplicated property names
             if properties.map({$0.nativeName}).index(of: property.nativeName) != nil{
                 continue
@@ -97,7 +97,7 @@ class FilesContentBuilder{
             //recursively handle custom types
             if property.isCustomClass{
                 let rProperty = relationProperty(className)
-                addFileWithName(&property.type, jsonObject: value as! NSDictionary, files:&files, toOneRelationWithProperty: rProperty)
+                addFileWithName(&property.type, jsonObject: value as! NSDictionary, files:&files, toOneRelationWithProperty: rProperty, annotations: &annotations)
             }else if property.isArray{
                 let array = value as! NSArray
                 if array.firstObject is NSDictionary{
@@ -106,7 +106,7 @@ class FilesContentBuilder{
                     var type = property.elementsType
                     let relatedProperty = relationProperty(className)
                     let allProperties = unionDictionaryFromArrayElements(array);
-                    addFileWithName(&type, jsonObject: allProperties, files:&files, toOneRelationWithProperty: relatedProperty)
+                    addFileWithName(&type, jsonObject: allProperties, files:&files, toOneRelationWithProperty: relatedProperty,annotations: &annotations)
                 }
             }
             
@@ -116,7 +116,7 @@ class FilesContentBuilder{
         
         //create the file
        
-        let file = FileRepresenter(className: className, properties: properties, lang:lang)
+        let file = FileRepresenter(className: className, properties: properties, lang:lang,annotations: annotations)
         
         file.includeUtilities = includeUtilities
         file.includeConstructors = includeConstructors
@@ -141,7 +141,7 @@ class FilesContentBuilder{
             
             if lang.headerFileData != nil{
                 //add header file first
-                let headerFile = HeaderFileRepresenter(className: className, properties: properties, lang:lang)
+                let headerFile = HeaderFileRepresenter(className: className, properties: properties, lang:lang,annotations:annotations)
                 headerFile.includeUtilities = includeUtilities
                 headerFile.includeConstructors = includeConstructors
                 headerFile.parentClassName = parentClassName
@@ -242,7 +242,8 @@ class FilesContentBuilder{
     {
         
         let nativeName = relationClassName.lowercaseFirstChar()
-        let property = Property(jsonName: nativeName, nativeName: nativeName, type: relationClassName, lang: lang)
+        
+        let property = Property(jsonName: nativeName, nativeName: nativeName, type: relationClassName, lang: lang,annotation: "", fieldType: "")
         property.isCustomClass = true
         
         return property
@@ -255,17 +256,30 @@ class FilesContentBuilder{
     - parameter jsonKeyName: for the property
     - returns: a Property instance
     */
-    func propertyForValue(_ value: AnyObject, jsonKeyName: String) -> Property
+    func propertyForValue(_ value: AnyObject, jsonKeyName: String, annotations : [Array<Any>]) -> Property
     {
         let nativePropertyName = propertyNativeName(jsonKeyName)
         var type = propertyTypeName(value, lang:lang)
 //        var isDictionary = false
 //        var isArray = false
-        
+        var annotation = ""
+        var fieldType = ""
+        for i in 0..<annotations.count {
+            let arr:Array = annotations[i]
+            if arr.count > 5 {
+                let name = arr[0]
+                let ann = arr[5]
+                let fdtp = arr[2]
+                if name as! String == jsonKeyName {
+                    annotation = ann as! String
+                    fieldType = fdtp as! String
+                }
+            }
+        }
         var property: Property!
         if value is NSDictionary {
             type = typeNameForPropertyName(jsonKeyName)
-            property = Property(jsonName: jsonKeyName, nativeName: nativePropertyName, type: type, isArray:false, isCustomClass: true, lang: lang)
+            property = Property(jsonName: jsonKeyName, nativeName: nativePropertyName, type: type, isArray:false, isCustomClass: true, lang: lang, annotation: annotation, fieldType: fieldType)
             
         }else if value is NSArray{
             //we need to check its elements...
@@ -277,17 +291,17 @@ class FilesContentBuilder{
 
                 type = lang.arrayType.replacingOccurrences(of: elementType, with: leafClassName)
                 
-                property = Property(jsonName: jsonKeyName, nativeName: nativePropertyName, type: type, isArray: true, isCustomClass: false, lang:lang)
+                property = Property(jsonName: jsonKeyName, nativeName: nativePropertyName, type: type, isArray: true, isCustomClass: false, lang:lang, annotation: annotation, fieldType: fieldType)
                 property.elementsType = leafClassName
                 //Create a class for this type as well!
                 
                 property.elementsAreOfCustomType = true
             }else{
-                property = Property(jsonName: jsonKeyName, nativeName: nativePropertyName, type: type, isArray: true, isCustomClass: false, lang:lang)
+                property = Property(jsonName: jsonKeyName, nativeName: nativePropertyName, type: type, isArray: true, isCustomClass: false, lang:lang, annotation: annotation, fieldType: fieldType)
                 property.elementsType = typeNameForArrayElements(value as! NSArray, lang:lang)
             }
         }else{
-            property = Property(jsonName: jsonKeyName, nativeName: nativePropertyName, type: type, lang:lang)
+            property = Property(jsonName: jsonKeyName, nativeName: nativePropertyName, type: type, lang:lang,annotation: annotation, fieldType: fieldType)
         }
         property.sampleValue = value
         return property

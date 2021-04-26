@@ -57,6 +57,7 @@ class FilePreviewCell: NSTableCellView, NSTextViewDelegate {
         super.awakeFromNib()
         if textView != nil{
             textView.delegate = self
+            textView.setFrameSize(NSSize(width: textView.frame.width, height: 10))
             DispatchQueue.main.async {
                 self.setupNumberedTextView()
             }

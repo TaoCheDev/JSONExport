@@ -33,7 +33,7 @@
 
 import Cocoa
 
-class ViewController: NSViewController, NSUserNotificationCenterDelegate, NSTableViewDelegate, NSTableViewDataSource, NSTextViewDelegate {
+class ViewController: NSViewController, NSUserNotificationCenterDelegate, NSTableViewDelegate, NSTableViewDataSource, NSTextViewDelegate, NSTextFieldDelegate {
     
     //Shows the list of files' preview
     @IBOutlet weak var tableView: NSTableView!
@@ -50,6 +50,12 @@ class ViewController: NSViewController, NSUserNotificationCenterDelegate, NSTabl
     //Connected to the scroll view which wraps the sourceText
     @IBOutlet weak var scrollView: NSScrollView!
     
+    //Connected to the JSON input text view
+    @IBOutlet var sourceText1: NSTextView!
+    
+    //Connected to the scroll view which wraps the sourceText
+    @IBOutlet weak var scrollView1: NSScrollView!
+    
     //Connected to Constructors check box
     @IBOutlet weak var generateConstructors: NSButtonCell!
     
@@ -57,7 +63,7 @@ class ViewController: NSViewController, NSUserNotificationCenterDelegate, NSTabl
     @IBOutlet weak var generateUtilityMethods: NSButtonCell!
     
     //Connected to root class name field
-    @IBOutlet weak var classNameField: NSTextFieldCell!
+    @IBOutlet weak var classNameField: NSTextField!
     
     //Connected to parent class name field
     @IBOutlet weak var parentClassName: NSTextField!
@@ -93,6 +99,17 @@ class ViewController: NSViewController, NSUserNotificationCenterDelegate, NSTabl
         super.viewDidLoad()
         saveButton.isEnabled = false
         sourceText.isAutomaticQuoteSubstitutionEnabled = false
+        sourceText1.isRichText = true
+        let classPrefix = UserDefaults.standard.value(forKey: "classPrefix")
+        if classPrefix != nil {
+            classPrefixField.stringValue = classPrefix as! String
+        }
+        
+        let parentClass = UserDefaults.standard.value(forKey: "parentClass")
+        if parentClass != nil {
+            parentClassName.stringValue = parentClass as! String
+        }
+        
         loadSupportedLanguages()
         setupNumberedTextView()
         setLanguagesSelection()
@@ -255,6 +272,14 @@ class ViewController: NSViewController, NSUserNotificationCenterDelegate, NSTabl
     
     func textDidChange(_ notification: Notification) {
         generateClasses()
+        let str:String = String(sourceText1.string)
+        
+        sourceText1.string = str
+        sourceText1.textColor = sourceText.textColor
+    }
+    
+    func controlTextDidChange(_ notification: Notification) {
+        generateClasses()
     }
     
     
@@ -287,11 +312,29 @@ class ViewController: NSViewController, NSUserNotificationCenterDelegate, NSTabl
 			if button.rawValue == NSFileHandlingPanelOKButton{
 				self.saveToPath(openPanel.url!.path)
 				self.showDoneSuccessfully()
+                DispatchQueue.main.async {
+                    UserDefaults.standard.set(self.classPrefixField.stringValue, forKey: "classPrefix")
+                    UserDefaults.standard.set(self.parentClassName.stringValue, forKey: "parentClass")
+                }
 			}
 		}
     }
     
-    
+    @IBAction func saveFilesToDesktop(_ sender: AnyObject)
+    {
+        let manager = FileManager.default
+        let urlForDocument = manager.urls( for: .desktopDirectory,
+                                                   in:.userDomainMask)
+        let url:URL = urlForDocument[0]
+        self.saveToPath(url.path)
+        self.showDoneSuccessfully()
+        DispatchQueue.main.async { [self] in
+            UserDefaults.standard.set(classPrefixField.stringValue, forKey: "classPrefix")
+            UserDefaults.standard.set(self.parentClassName.stringValue, forKey: "parentClass")
+        }
+
+        
+    }
     /**
      Saves all the generated files in the specified path
      
@@ -309,8 +352,13 @@ class ViewController: NSViewController, NSUserNotificationCenterDelegate, NSTabl
             if file is HeaderFileRepresenter{
                 fileExtension = selectedLang.headerFileData.headerFileExtension
             }
-            let filePath = "\(path)/\(file.className).\(fileExtension)"
-            
+            var filePath = "\(path)/\(file.className).\(fileExtension)"
+            if file.lang.displayLangName == "Swift - YXSwiftModel" {
+                filePath = "\(path)/\(file.className)Model.\(fileExtension)"
+            }
+            if file.lang.displayLangName == "Koltlin - YXKoltlin" {
+                filePath = "\(path)/\(file.className)Entity.\(fileExtension)"
+            }
             do {
                 try fileContent.write(toFile: filePath, atomically: false, encoding: String.Encoding.utf8)
             } catch let error1 as NSError {
@@ -372,7 +420,33 @@ class ViewController: NSViewController, NSUserNotificationCenterDelegate, NSTabl
         statusTextField.stringValue = successMessage
     }
     
-    
+    func splitArray( array: [String], withSubSize subSize: Int) -> [[String]] {
+        //  数组将被拆分成指定长度数组的个数
+        let count = array.count  % subSize == 0 ? (array.count  / subSize) : (array.count  / subSize + 1)
+        //  用来保存指定长度数组的可变数组对象
+        var arr: [[String]] = []
+         
+        //利用总个数进行循环，将指定长度的元素加入数组
+        for i in 0..<count {
+            //数组下标
+            let index: Int = i * subSize
+            //保存拆分的固定长度的数组元素的可变数组
+            var arr1: [String] = []
+            //移除子数组的所有元素
+            arr1.removeAll()
+             
+            var j: Int = index
+            //将数组下标乘以1、2、3，得到拆分时数组的最大下标值，但最大不能超过数组的总大小
+            while j < subSize * (i + 1) && j < array.count  {
+                arr1.append(array[j])
+                j += 1
+            }
+            //将子数组添加到保存子数组的数组中
+            arr.append(arr1)
+        }
+         
+        return arr
+    }
     
     //MARK: - Generate files content
     /**
@@ -382,6 +456,17 @@ class ViewController: NSViewController, NSUserNotificationCenterDelegate, NSTabl
     {
         saveButton.isEnabled = false
         var str = sourceText.string
+        let str1 = sourceText1.string
+        
+        
+        let strArray : Array = str1.components(separatedBy: "简介\n")
+        let str2 : String = String(strArray.last ?? "")
+        let strArray2 : Array = str2.components(separatedBy: "\n响应模板")
+        let str3 : String = String(strArray2.first ?? "")
+        
+        let strArray3 : Array = str3.components(separatedBy: "\n")
+        var tmpArray : [Array<Any>] = splitArray(array: strArray3, withSubSize: 6)
+        
         
         if str.count == 0{
             runOnUiThread{
@@ -415,7 +500,7 @@ class ViewController: NSViewController, NSUserNotificationCenterDelegate, NSTabl
                         self.loadSelectedLanguageModel()
                         self.files.removeAll(keepingCapacity: false)
                         let fileGenerator = self.prepareAndGetFilesBuilder()
-                        fileGenerator.addFileWithName(&rootClassName, jsonObject: json, files: &self.files)
+                        fileGenerator.addFileWithName(&rootClassName, jsonObject: json, files: &self.files,annotations: &tmpArray)
                         fileGenerator.fixReferenceMismatches(inFiles: self.files)
                         self.files = Array(self.files.reversed())
                         self.sourceText.isEditable = true

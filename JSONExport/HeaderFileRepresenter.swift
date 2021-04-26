@@ -146,7 +146,7 @@ class HeaderFileRepresenter : FileRepresenter{
     {
         fileContent += "\n"
         for property in properties{
-            fileContent += property.toString(true)
+            fileContent += "\n/** " + property.annotation + " */\n" + property.toString(true)
         }
     }
     

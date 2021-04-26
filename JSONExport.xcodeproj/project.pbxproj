@@ -23,6 +23,9 @@
 		60FB8FFC1B9B3F6400290979 /* ObjectiveC-Realm.json in Resources */ = {isa = PBXBuildFile; fileRef = 60FB8FFA1B9B3F6400290979 /* ObjectiveC-Realm.json */; };
 		60FB8FFD1B9B3F6400290979 /* Swift-Realm.json in Resources */ = {isa = PBXBuildFile; fileRef = 60FB8FFB1B9B3F6400290979 /* Swift-Realm.json */; };
 		98978FC11D5B6B19000C1846 /* Swift-Struct-Unbox.json in Resources */ = {isa = PBXBuildFile; fileRef = 98978FC01D5B6B19000C1846 /* Swift-Struct-Unbox.json */; };
+		9BDCC8C62631082700488430 /* Swift-YXSwiftModel.json in Resources */ = {isa = PBXBuildFile; fileRef = 9BDCC8C52631082600488430 /* Swift-YXSwiftModel.json */; };
+		9BDCC8CE2631650D00488430 /* Java-YXAndroid.json in Resources */ = {isa = PBXBuildFile; fileRef = 9BDCC8CD2631650D00488430 /* Java-YXAndroid.json */; };
+		9BDCC8D12632C3AD00488430 /* Koltlin-YXKoltlin.json in Resources */ = {isa = PBXBuildFile; fileRef = 9BDCC8D02632C3AC00488430 /* Koltlin-YXKoltlin.json */; };
 		A329A7ED1D5DA1ED00FB59E8 /* Java-Android Gson.json in Resources */ = {isa = PBXBuildFile; fileRef = A329A7EC1D5DA1ED00FB59E8 /* Java-Android Gson.json */; };
 		E20A0DAD1A1170F1003B3D62 /* NoodleLineNumberMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = E20A0DAA1A1170F1003B3D62 /* NoodleLineNumberMarker.m */; };
 		E20A0DAE1A1170F1003B3D62 /* NoodleLineNumberView.m in Sources */ = {isa = PBXBuildFile; fileRef = E20A0DAC1A1170F1003B3D62 /* NoodleLineNumberView.m */; };
@@ -64,6 +67,10 @@
 		60FB8FFA1B9B3F6400290979 /* ObjectiveC-Realm.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "ObjectiveC-Realm.json"; path = "Supported Languages/ObjectiveC-Realm.json"; sourceTree = "<group>"; };
 		60FB8FFB1B9B3F6400290979 /* Swift-Realm.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "Swift-Realm.json"; path = "Supported Languages/Swift-Realm.json"; sourceTree = "<group>"; };
 		98978FC01D5B6B19000C1846 /* Swift-Struct-Unbox.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "Swift-Struct-Unbox.json"; path = "Supported Languages/Swift-Struct-Unbox.json"; sourceTree = "<group>"; };
+		9BDCC8C52631082600488430 /* Swift-YXSwiftModel.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "Swift-YXSwiftModel.json"; path = "Supported Languages/Swift-YXSwiftModel.json"; sourceTree = "<group>"; };
+		9BDCC8CB2631489600488430 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
+		9BDCC8CD2631650D00488430 /* Java-YXAndroid.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "Java-YXAndroid.json"; path = "Supported Languages/Java-YXAndroid.json"; sourceTree = "<group>"; };
+		9BDCC8D02632C3AC00488430 /* Koltlin-YXKoltlin.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "Koltlin-YXKoltlin.json"; path = "Supported Languages/Koltlin-YXKoltlin.json"; sourceTree = "<group>"; };
 		A329A7EC1D5DA1ED00FB59E8 /* Java-Android Gson.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "Java-Android Gson.json"; path = "Supported Languages/Java-Android Gson.json"; sourceTree = "<group>"; };
 		E20A0DA81A1170F1003B3D62 /* JSONExport-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "JSONExport-Bridging-Header.h"; sourceTree = "<group>"; };
 		E20A0DA91A1170F1003B3D62 /* NoodleLineNumberMarker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoodleLineNumberMarker.h; sourceTree = "<group>"; };
@@ -163,11 +170,14 @@
 				60FB8FFA1B9B3F6400290979 /* ObjectiveC-Realm.json */,
 				A329A7EC1D5DA1ED00FB59E8 /* Java-Android Gson.json */,
 				60FB8FE61B9B361600290979 /* Java-Android Realm.json */,
+				9BDCC8CD2631650D00488430 /* Java-YXAndroid.json */,
 				60FB8FE71B9B361600290979 /* Java-Android.json */,
 				60FB8FE81B9B361600290979 /* ObjectiveC-CoreData-iOS.json */,
 				60FB8FE91B9B361600290979 /* ObjectiveC-iOS.json */,
 				60FB8FEA1B9B361600290979 /* ObjectiveC-Mac.json */,
 				60FB8FFB1B9B3F6400290979 /* Swift-Realm.json */,
+				9BDCC8C52631082600488430 /* Swift-YXSwiftModel.json */,
+				9BDCC8D02632C3AC00488430 /* Koltlin-YXKoltlin.json */,
 				60FB8FEB1B9B361600290979 /* Swift-Class.json */,
 				60FB8FEC1B9B361600290979 /* Swift-CoreData.json */,
 				60FB8FED1B9B361600290979 /* Swift-Mappable.json */,
@@ -275,8 +285,10 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
+				"zh-Hans",
 			);
 			mainGroup = E2FA87AC1A059AC100648EB6;
 			productRefGroup = E2FA87B61A059AC100648EB6 /* Products */;
@@ -299,6 +311,7 @@
 				A329A7ED1D5DA1ED00FB59E8 /* Java-Android Gson.json in Resources */,
 				60FB8FF31B9B361600290979 /* ObjectiveC-iOS.json in Resources */,
 				60FB8FFC1B9B3F6400290979 /* ObjectiveC-Realm.json in Resources */,
+				9BDCC8D12632C3AD00488430 /* Koltlin-YXKoltlin.json in Resources */,
 				60FB8FF11B9B361600290979 /* Java-Android.json in Resources */,
 				E24E443321AA12B800435FE7 /* Swift3-Mappable.json in Resources */,
 				60FB8FF81B9B361600290979 /* Swift-Struct.json in Resources */,
@@ -309,9 +322,11 @@
 				60FB8FF61B9B361600290979 /* Swift-CoreData.json in Resources */,
 				60FB8FF91B9B361600290979 /* SwiftyJSON-Class.json in Resources */,
 				60FB8FF21B9B361600290979 /* ObjectiveC-CoreData-iOS.json in Resources */,
+				9BDCC8C62631082700488430 /* Swift-YXSwiftModel.json in Resources */,
 				E2FA87C21A059AC100648EB6 /* Main.storyboard in Resources */,
 				E24E443221AA12B800435FE7 /* Swift-Outlaw.json in Resources */,
 				166AF5CE1CEF6C3600516EDD /* Swift-Struct-Gloss.json in Resources */,
+				9BDCC8CE2631650D00488430 /* Java-YXAndroid.json in Resources */,
 				60FB8FF41B9B361600290979 /* ObjectiveC-Mac.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -351,6 +366,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				E2FA87C11A059AC100648EB6 /* Base */,
+				9BDCC8CB2631489600488430 /* zh-Hans */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";

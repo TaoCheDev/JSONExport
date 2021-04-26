@@ -46,7 +46,7 @@ class FileRepresenter{
     Array of properties which will be included in the file content
     */
     var properties : [Property]
-    
+    var annotations : [Array<Any>]
     /**
     The target language meta instance
     */
@@ -81,11 +81,12 @@ class FileRepresenter{
     /**
     Designated initializer
     */
-    init(className: String, properties: [Property], lang: LangModel)
+    init(className: String, properties: [Property], lang: LangModel, annotations : [Array<Any>])
     {
         self.className = className
         self.properties = properties
         self.lang = lang
+        self.annotations = annotations
     }
     
     /**
@@ -115,9 +116,13 @@ class FileRepresenter{
         fileContent += "\(lang.modelStart)"
         
         appendProperties()
-        appendSettersAndGetters()
-        appendInitializers()
-        appendUtilityMethods()
+        if lang.displayLangName != "Swift - YXSwiftModel" && lang.displayLangName != "Koltlin - YXKoltlin" {
+            appendSettersAndGetters()
+            appendInitializers()
+            appendUtilityMethods()
+        }
+        
+        
         fileContent = fileContent.replacingOccurrences(of: lowerCaseModelName, with:className.lowercaseFirstChar())
         fileContent = fileContent.replacingOccurrences(of: modelName, with:className)
         fileContent += lang.modelEnd
@@ -169,7 +174,13 @@ class FileRepresenter{
     */
     func appendCopyrights()
     {
-        fileContent += "//\n//\t\(className).\(lang.fileExtension)\n"
+        if lang.displayLangName != "Java - YXAndroid" && lang.displayLangName != "Koltlin - YXKoltlin" {
+            if lang.displayLangName == "Swift - YXSwiftModel" {
+                fileContent += "//\n//\t\(className)Model.\(lang.fileExtension)\n"
+            } else {
+                fileContent += "//\n//\t\(className).\(lang.fileExtension)\n"
+            }
+        }
         if let me = ABAddressBook.shared()?.me(){
             
             if let firstName = me.value(forProperty: kABFirstNameProperty as String) as? String{
@@ -189,7 +200,9 @@ class FileRepresenter{
             fileContent += ". All rights reserved.\n"
         }
         
-        fileContent += "//\tModel file generated using JSONExport: https://github.com/Ahmed-Ali/JSONExport"
+        if lang.displayLangName != "Java - YXAndroid" && lang.displayLangName != "Koltlin - YXKoltlin" {
+            fileContent += "//\tModel file generated using JSONExport: https://github.com/Ahmed-Ali/JSONExport"
+        }
         
         if let langAuthor = lang.author{
             fileContent += "\n\n//\tThe \"\(lang.displayLangName!)\" support has been made available by \(langAuthor.name!)"
@@ -203,8 +216,10 @@ class FileRepresenter{
             
         }
         
+        if lang.displayLangName != "Java - YXAndroid" && lang.displayLangName != "Koltlin - YXKoltlin" {
+            fileContent += "\n\n"
+        }
         
-        fileContent += "\n\n"
     }
     
     /**
@@ -248,8 +263,30 @@ class FileRepresenter{
     {
         fileContent += "\n"
         for property in properties{
+            if property.lang.displayLangName == "Java - YXAndroid" {
+                if property.fieldType != "" {
+                    fileContent += "\n    // " + property.annotation + " - " + property.fieldType + "\n" + property.toString(false)
+                } else {
+                    fileContent += "\n    // " + property.annotation + "\n" + property.toString(false)
+                }
+            } else if lang.displayLangName == "Swift - YXSwiftModel" {
+                if property.fieldType != "" {
+                    fileContent += "\n    /// " + property.annotation + " - " + property.fieldType + "\n" + property.toString(false)
+                } else {
+                    fileContent += "\n    /// " + property.annotation + "\n" + property.toString(false)
+                }
+                
+            } else if lang.displayLangName == "Koltlin - YXKoltlin" {
+                if property.fieldType != "" {
+                    fileContent += "\n    /**\n " + "    *" + property.annotation + " - " + property.fieldType + "\n" + "     */" + "\n" + property.toString(false)
+                } else {
+                    fileContent += "\n    /**\n " + "    *" + property.annotation + "     */" + "\n" + property.toString(false)
+                }
+                
+            } else {
+                fileContent += property.toString(false)
+            }
             
-            fileContent += property.toString(false)
         }
     }
     
@@ -481,7 +518,10 @@ class FileRepresenter{
                     propertyStr = propertyStr.replacingOccurrences(of: varTypeReplacement, with: replacement)
                     
                     // if needs cast
-                    let cast = lang.basicTypesWithSpecialFetchingNeedsTypeCast[index]
+                    var cast = ""
+                    if (lang.basicTypesWithSpecialFetchingNeedsTypeCast != nil) {
+                        cast = lang.basicTypesWithSpecialFetchingNeedsTypeCast[index]
+                    }
                     if !cast.isEmpty {
                         propertyStr = propertyStr.replacingOccurrences(of: varTypeCast, with: "(\(cast)) ")
                     }
