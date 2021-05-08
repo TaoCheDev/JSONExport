@@ -262,7 +262,10 @@ class FileRepresenter{
     func appendProperties()
     {
         fileContent += "\n"
+        let propertiesArr:Array = Array(properties)
+        var i = 0
         for property in properties{
+            i = i + 1
             if property.lang.displayLangName == "Java - YXAndroid" {
                 if property.fieldType != "" {
                     fileContent += "\n    // " + property.annotation + " - " + property.fieldType + "\n" + property.toString(false)
@@ -277,12 +280,16 @@ class FileRepresenter{
                 }
                 
             } else if lang.displayLangName == "Koltlin - YXKoltlin" {
-                if property.fieldType != "" {
-                    fileContent += "\n    /**\n " + "    *" + property.annotation + " - " + property.fieldType + "\n" + "     */" + "\n" + property.toString(false)
-                } else {
-                    fileContent += "\n    /**\n " + "    *" + property.annotation + "     */" + "\n" + property.toString(false)
-                }
+                var fileProperty:String = property.toString(false) + ","
                 
+                if i == propertiesArr.count {
+                    fileProperty = property.toString(false)
+                }
+                if property.fieldType != "" {
+                    fileContent += "\n    /**\n " + "    *" + property.annotation + " - " + property.fieldType + "\n" + "     */" + "\n" + fileProperty
+                } else {
+                    fileContent += "\n    /**\n " + "    *" + property.annotation + "     */" + "\n" + fileProperty
+                }
             } else {
                 fileContent += property.toString(false)
             }
