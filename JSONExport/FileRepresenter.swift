@@ -46,7 +46,7 @@ class FileRepresenter{
     Array of properties which will be included in the file content
     */
     var properties : [Property]
-    var annotations : [Array<Any>]
+    var annotations : [[String: Any]]
     /**
     The target language meta instance
     */
@@ -81,7 +81,7 @@ class FileRepresenter{
     /**
     Designated initializer
     */
-    init(className: String, properties: [Property], lang: LangModel, annotations : [Array<Any>])
+    init(className: String, properties: [Property], lang: LangModel, annotations : [[String: Any]])
     {
         self.className = className
         self.properties = properties

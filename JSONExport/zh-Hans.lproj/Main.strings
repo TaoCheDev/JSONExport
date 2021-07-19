@@ -3,7 +3,7 @@
 "1UK-8n-QPP.title" = "Customize Toolbar…";
 
 /* Class = "NSMenuItem"; title = "JSONExport"; ObjectID = "1Xt-HY-uBw"; */
-"1Xt-HY-uBw.title" = "JSONExport";
+"1Xt-HY-uBw.title" = "JSONExportForRap2";
 
 /* Class = "NSMenu"; title = "Find"; ObjectID = "1b7-l0-nxx"; */
 "1b7-l0-nxx.title" = "Find";
@@ -144,7 +144,7 @@
 "IAo-SY-fd9.title" = "Open…";
 
 /* Class = "NSWindow"; title = "JSONExport"; ObjectID = "IQv-IB-iLA"; */
-"IQv-IB-iLA.title" = "JSONExport";
+"IQv-IB-iLA.title" = "JSONExportForRap2";
 
 /* Class = "NSMenuItem"; title = "Justify"; ObjectID = "J5U-5w-g23"; */
 "J5U-5w-g23.title" = "Justify";
@@ -261,7 +261,7 @@
 "Wf6-Cp-ZQz.title" = "Swift Classes";
 
 /* Class = "NSViewController"; title = "JSONExport"; ObjectID = "XfG-lQ-9wD"; */
-"XfG-lQ-9wD.title" = "JSONExport";
+"XfG-lQ-9wD.title" = "JSONExportForRap2";
 
 /* Class = "NSButtonCell"; title = "Open .json File"; ObjectID = "XsJ-Wl-WPN"; */
 "XsJ-Wl-WPN.title" = "Open .json File";
@@ -414,7 +414,7 @@
 "tlD-Oa-oAM.title" = "Kern";
 
 /* Class = "NSMenu"; title = "JSONExport"; ObjectID = "uQy-DD-JDr"; */
-"uQy-DD-JDr.title" = "JSONExport";
+"uQy-DD-JDr.title" = "JSONExportForRap2";
 
 /* Class = "NSMenuItem"; title = "Cut"; ObjectID = "uRl-iY-unG"; */
 "uRl-iY-unG.title" = "Cut";

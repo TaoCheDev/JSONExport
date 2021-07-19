@@ -73,7 +73,7 @@ class FilesContentBuilder{
     - parameter jsonObject: acts as an example of the json object, which the generated fill be able to handle
     - parameter files: the generated file will be appended to this array
     */
-    func addFileWithName(_ className: inout String, jsonObject: NSDictionary, files : inout [FileRepresenter], toOneRelationWithProperty: Property! = nil, annotations : inout [Array<Any>])
+    func addFileWithName(_ className: inout String, jsonObject: NSDictionary, files : inout [FileRepresenter], toOneRelationWithProperty: Property! = nil, annotations : inout [[String: Any]])
     {
         var properties = [Property]()
         if !className.hasPrefix(classPrefix){
@@ -256,7 +256,7 @@ class FilesContentBuilder{
     - parameter jsonKeyName: for the property
     - returns: a Property instance
     */
-    func propertyForValue(_ value: AnyObject, jsonKeyName: String, annotations : [Array<Any>]) -> Property
+    func propertyForValue(_ value: AnyObject, jsonKeyName: String, annotations : [[String: Any]]) -> Property
     {
         let nativePropertyName = propertyNativeName(jsonKeyName)
         var type = propertyTypeName(value, lang:lang)
@@ -264,16 +264,29 @@ class FilesContentBuilder{
 //        var isArray = false
         var annotation = ""
         var fieldType = ""
+//        for i in 0..<annotations.count {
+//            let arr:Array = annotations[i] as! [[String: Any]]
+//            if arr.count > 5 {
+//                let name = arr[0]
+//                let ann = arr[5]
+//                let fdtp = arr[2]
+//                if name as! String == jsonKeyName {
+//                    annotation = ann as! String
+//                    fieldType = fdtp as! String
+//                }
+//            }
+//        }
         for i in 0..<annotations.count {
-            let arr:Array = annotations[i]
-            if arr.count > 5 {
-                let name = arr[0]
-                let ann = arr[5]
-                let fdtp = arr[2]
-                if name as! String == jsonKeyName {
-                    annotation = ann as! String
-                    fieldType = fdtp as! String
-                }
+            let dict = annotations[i]
+            let name = dict["name"] as! String
+            let descreption = dict["description"] ?? ""
+            let type = dict["type"] ?? ""
+            if jsonKeyName == "brandName" && name == "brandName" {
+                
+            }
+            if name == jsonKeyName {
+                annotation = descreption as! String
+                fieldType = type as! String
             }
         }
         var property: Property!

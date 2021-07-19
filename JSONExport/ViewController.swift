@@ -459,14 +459,39 @@ class ViewController: NSViewController, NSUserNotificationCenterDelegate, NSTabl
         let str1 = sourceText1.string
         
         
-        let strArray : Array = str1.components(separatedBy: "简介\n")
-        let str2 : String = String(strArray.last ?? "")
-        let strArray2 : Array = str2.components(separatedBy: "\n响应模板")
-        let str3 : String = String(strArray2.first ?? "")
+//        let strArray : Array = str1.components(separatedBy: "简介\n")
+//        let str2 : String = String(strArray.last ?? "")
+//        let strArray2 : Array = str2.components(separatedBy: "\n响应模板")
+//        let str3 : String = String(strArray2.first ?? "")
         
-        let strArray3 : Array = str3.components(separatedBy: "\n")
-        var tmpArray : [Array<Any>] = splitArray(array: strArray3, withSubSize: 6)
+//        let strArray3 : Array = str3.components(separatedBy: "\n")
+        var tmpArray = [[String: Any]]()
         
+        runOnBackground {
+            str = stringByRemovingControlCharacters(str)
+            if let data = str1.data(using: String.Encoding.utf8){
+                var error : NSError?
+                do {
+                    let jsonData : Any = try JSONSerialization.jsonObject(with: data, options: [])
+                    var json : NSDictionary!
+                    if jsonData is NSDictionary{
+                        //fine nothing to do
+                        json = jsonData as? NSDictionary
+                        tmpArray = json["properties"] as! [[String : Any]]
+                    }
+                    
+                    
+                } catch let error1 as NSError {
+                    error = error1
+                    runOnUiThread({ () -> Void in
+
+                    })
+                    
+                } catch {
+                    fatalError()
+                }
+            }
+        }
         
         if str.count == 0{
             runOnUiThread{
